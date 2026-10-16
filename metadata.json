@@ -1,0 +1,6 @@
+{
+  "name": "Nazanin | یکی یدونم",
+  "description": "وبسایت رویایی و سه‌بعدی برای نازنین (کیوتک، یکی یدونم) پر از نامه‌های دلتنگی، شعر و عشق از راه دور",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
