@@ -4,13 +4,13 @@ import { fileURLToPath, URL } from 'node:url';
 import { defineConfig } from 'vite';
 
 export default defineConfig(() => {
-  // Automatically detect GitHub Pages repository path in GitHub Actions or fallback to relative './'
-  const base = process.env.GITHUB_REPOSITORY
-    ? `/${process.env.GITHUB_REPOSITORY.split('/')[1]}/`
-    : './';
-
   return {
-    base,
+    // Relative base ensures all assets load properly regardless of GitHub repository name or subfolder
+    base: './',
+    build: {
+      outDir: 'docs',
+      emptyOutDir: true,
+    },
     plugins: [react(), tailwindcss()],
     resolve: {
       alias: {

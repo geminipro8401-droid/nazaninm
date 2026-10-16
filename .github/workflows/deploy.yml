@@ -37,12 +37,12 @@ jobs:
         run: npm run build
 
       - name: Create 404 page fallback for SPA
-        run: cp dist/index.html dist/404.html
+        run: cp docs/index.html docs/404.html 2>/dev/null || true
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './dist'
+          path: './docs'
 
       - name: Deploy to GitHub Pages
         id: deployment
