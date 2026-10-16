@@ -67,11 +67,25 @@ export const ThreeCanvas: React.FC<ThreeCanvasProps> = ({ onHeartbeatTrigger }) 
     }
   }, [cameraPreset]);
 
+  const [webglSupported, setWebglSupported] = useState<boolean>(true);
+
   useEffect(() => {
     const container = mountRef.current;
     if (!container) return;
 
-    // 1. Scene, Camera, Renderer
+    let renderer: THREE.WebGLRenderer;
+    try {
+      renderer = new THREE.WebGLRenderer({
+        antialias: true,
+        alpha: true,
+        powerPreference: 'high-performance'
+      });
+    } catch (e) {
+      console.warn('WebGL is not available in this environment:', e);
+      setWebglSupported(false);
+      return;
+    }
+
     const scene = new THREE.Scene();
     scene.fog = new THREE.FogExp2(0x040106, 0.035);
 
@@ -83,11 +97,6 @@ export const ThreeCanvas: React.FC<ThreeCanvasProps> = ({ onHeartbeatTrigger }) 
     );
     camera.position.copy(_targetCamPos);
 
-    const renderer = new THREE.WebGLRenderer({
-      antialias: true,
-      alpha: true,
-      powerPreference: 'high-performance'
-    });
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.15;
@@ -684,7 +693,19 @@ export const ThreeCanvas: React.FC<ThreeCanvasProps> = ({ onHeartbeatTrigger }) 
       className="relative w-full h-[650px] md:h-[720px] bg-radial from-[#1e071c] via-[#0d030f] to-[#040106] overflow-hidden rounded-3xl border border-luxury-glow box-glow-luxury shadow-2xl"
     >
       {/* 3D WebGL Canvas Mount */}
-      <div ref={mountRef} className="absolute inset-0 cursor-grab active:cursor-grabbing w-full h-full" />
+      {webglSupported ? (
+        <div ref={mountRef} className="absolute inset-0 cursor-grab active:cursor-grabbing w-full h-full" />
+      ) : (
+        <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center select-none">
+          <div className="w-28 h-28 rounded-full bg-gradient-to-tr from-rose-900 via-red-600 to-pink-500 flex items-center justify-center shadow-2xl shadow-rose-900 mb-4 animate-heartbeat-luxury border border-rose-300/40">
+            <span className="text-5xl">🌹</span>
+          </div>
+          <h3 className="text-xl font-bold text-rose-200 mb-1">رز کریستالی ابدی برای نازنین</h3>
+          <p className="text-xs text-pink-300/70 max-w-sm">
+            فاصله‌ها محو می‌شوند وقتی یاد تو در جانم جاری است ❤️
+          </p>
+        </div>
+      )}
 
       {/* Top Floating Badge & Specs */}
       <div className="absolute top-4 right-4 z-10 flex items-center gap-2 select-none">
