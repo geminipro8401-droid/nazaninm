@@ -5,11 +5,17 @@ import { defineConfig } from 'vite';
 
 export default defineConfig(() => {
   return {
-    // Relative base ensures all assets load properly regardless of GitHub repository name or subfolder
     base: './',
     build: {
-      outDir: 'docs',
+      outDir: 'dist',
       emptyOutDir: true,
+      rollupOptions: {
+        output: {
+          entryFileNames: 'assets/app.js',
+          chunkFileNames: 'assets/[name].js',
+          assetFileNames: 'assets/[name].[ext]',
+        },
+      },
     },
     plugins: [react(), tailwindcss()],
     resolve: {
